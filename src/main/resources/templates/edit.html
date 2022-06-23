@@ -1,0 +1,39 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title th:text="${edit} ? 'Edit User'" />
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+</head>
+<body>
+<h1 th:text="${edit} ? 'Edit User:'" />
+<a th:href="@{/users}">Back to User List</a>
+<br/><br/>
+<form th:action="${edit} ? @{/users/{id}/edit(id=${user.id})}"
+      th:object="${user}" method="POST">
+    <table border="0">
+        <tr th:if="${user}">
+            <td>ID</td>
+            <td>:</td>
+            <td th:utext="${id}">...</td>
+        </tr>
+        <tr>
+            <label for="userName">Name</label>
+            <input type="text" th:field="*{userName}" id="userName" placeholder="Name">
+        </tr>
+        <tr>
+            <label for="userAge">Age</label>
+            <input type="text" th:field="*{userAge}" id="userAge" placeholder="Age">
+        </tr>
+        <tr>
+            <label for="userJob">Job</label>
+            <input type="text" th:field="*{userJob}" id="userJob" placeholder="Job">
+        </tr>
+    </table>
+    <input type="submit" th:value="Edit" />
+</form>
+
+<br/>
+<!-- Check if errorMessage is not null and not empty -->
+<div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />
+</body>
+</html>
