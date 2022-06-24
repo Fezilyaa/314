@@ -19,21 +19,21 @@ public class User implements UserDetails {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "USER_NAME")
+    //@Column(name = "username")
     private String username;
     @Column(name = "USER_AGE")
     private int userAge;
     @Column(name = "USER_JOB")
     private String userJob;
 
-    @Column(name = "USER_PASSWORD")
+    @Column(name = "password")
     private String userPassword;
 
     @ManyToMany(cascade=CascadeType.MERGE)
     @JoinTable(
-            name="USER_ROLE",
-            joinColumns={@JoinColumn(name="ID", referencedColumnName="ID")},
-            inverseJoinColumns={@JoinColumn(name="role_id", referencedColumnName="ID")})
+            name="user_role",
+            joinColumns=@JoinColumn(name="user_id"),
+            inverseJoinColumns=@JoinColumn(name="role_id"))
     private List<Role> roles;
     public User() {
 

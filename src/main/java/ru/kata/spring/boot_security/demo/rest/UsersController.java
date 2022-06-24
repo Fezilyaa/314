@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -16,6 +17,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+@Controller
 public class UsersController {
     private final UserServiceImpl userService;
     private final UserRepository userRepository;

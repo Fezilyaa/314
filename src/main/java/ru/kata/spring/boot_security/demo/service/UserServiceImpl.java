@@ -1,8 +1,8 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -54,6 +54,7 @@ public class UserServiceImpl implements  UserDetailsService {
         User user = repo.findByUsername(username);
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 getAuthorities(user.getRoles()));
+
     }
 
     private static Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
