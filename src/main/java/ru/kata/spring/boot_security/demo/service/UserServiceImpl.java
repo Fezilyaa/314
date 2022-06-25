@@ -29,9 +29,10 @@ public class UserServiceImpl implements  UserDetailsService {
     }
 
 
-    public void addUser(User user) {
-        repo.save(user);
+    public User addUser(User user) {
+        return repo.save(user);
     }
+
 
 
     public User getUserById(Long id) {
@@ -52,13 +53,20 @@ public class UserServiceImpl implements  UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = repo.findByUsername(username);
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+        UserDetails newUser = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 getAuthorities(user.getRoles()));
+        //return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+        //        getAuthorities(user.getRoles()));
+        return newUser;
 
     }
 
     private static Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
         return roles.stream().map(r -> new SimpleGrantedAuthority(r.getAuthority()))
                 .collect(Collectors.toSet());
+    }
+
+    public User findByUsername(String username) {
+        return repo.findByUsername(username);
     }
 }

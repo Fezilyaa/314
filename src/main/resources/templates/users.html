@@ -8,42 +8,37 @@
 </head>
 <body>
 <h1>User List</h1>
-
 <div>
     <nobr>
-        <a th:href="@{/users/add}">Add User</a> |
-        <a th:href="@{/users}">Back to User List</a>
+        <a th:href="@{/admin/add}">Add User</a> |
+        <a th:href="@{/admin}">Back to User List</a>
     </nobr>
 </div>
 <br/><br/>
 <div>
-    <table border="1">
+    <table class="table table-bordered table-striped table-dark">
+        <table border="2">
         <tr>
-            <th>Id</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Job</th>
-            <th>Edit</th>
-            <th>Delete</th>
-            <!--            <th>Delete</th>-->
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Job</th>
+            <th scope="col">Role</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
         </tr>
         <tr th:each ="user : ${users}">
-            <td><a th:href="@{/users/{userId}(userId=${user.id})}" th:utext="${user.getId()}">...</a></td>
-            <td><a th:href="@{/users/{userId}(userId=${user.id})}" th:utext="${user.getUserName()}">...</a></td>
-            <td th:utext="${user.getUserAge()}">...</td>
-            <td th:utext="${user.getUserJob()}">...</td>
-            <td><a th:href="@{/users/{id}/edit(id=${user.getId()})}">Edit</a></td>
-            <td><a th:href="@{/users/{id}/delete(id=${user.getId()})}">Delete</a></td>
-            <!--            <td><a th:href="@{/users/(userId=${user.getId()})}">Delete</a></td>-->
+            <td><a th:href="@{/admin/{userId}(userId=${user.id})}" th:utext="${user.id}">...</a></td>
+            <td><a th:href="@{/admin/{userId}(userId=${user.id})}" th:utext="${user.username}">...</a></td>
+            <td th:utext="${user.userAge}">...</td>
+            <td th:utext="${user.userJob}">...</td>
+            <td th:text="${#strings.setJoin(user.getAuthorities, ',')}">...</td>
+            <td><a th:href="@{/admin/{id}/edit(id=${user.id})}">Edit</a></td>
+            <td><a th:href="@{/admin/{id}/delete(id=${user.id})}">Delete</a></td>
         </tr>
     </table>
 </div>
-<br/><br/>
-<div>
-    <!--    <nobr>-->
-    <!--        <span th:if="${hasPrev}"><a th:href="@{/users?page={prev}(prev=${prev})}">Prev</a>&nbsp;&nbsp;&nbsp;</span>-->
-    <!--        <span th:if="${hasNext}"><a th:href="@{/users?page={next}(next=${next})}">Next</a></span>-->
-    <!--    </nobr>-->
+<a th:href="@{/logout}">Logout</a>
 </div>
 </body>
 </html>

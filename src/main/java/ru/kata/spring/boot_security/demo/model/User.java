@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.*;
 
@@ -25,24 +26,21 @@ public class User implements UserDetails {
     private int userAge;
     @Column(name = "USER_JOB")
     private String userJob;
-
     @Column(name = "password")
-    private String userPassword;
+    private String password;
+
 
     @ManyToMany(cascade=CascadeType.MERGE)
     @JoinTable(
             name="user_role",
             joinColumns=@JoinColumn(name="user_id"),
             inverseJoinColumns=@JoinColumn(name="role_id"))
-    private List<Role> roles;
-    public User() {
-
-    }
+    private Set<Role> roles;
 
     public Collection<Role> getRoles() {
         return roles;
     }
-    public void setRoles(List<Role> roles)
+    public void setRoles(Set<Role> roles)
     {
         this.roles = roles;
     }
@@ -78,6 +76,7 @@ public class User implements UserDetails {
                 ", userName='" + username + '\'' +
                 ", userAge=" + userAge +
                 ", userJob='" + userJob + '\'' +
+                ", password='" + password + '\'' +
                 '}';
     }
 
@@ -88,14 +87,22 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return userPassword;
+        return password;
     }
+
+//    public void setUserPassword(String password) {
+//        this.password = password;
+//
+//    }
 
     @Override
     public String getUsername() {
         return username;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
     @Override
     public boolean isAccountNonExpired() {
         return true;
