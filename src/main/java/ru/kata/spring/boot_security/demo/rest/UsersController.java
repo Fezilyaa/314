@@ -6,29 +6,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.rep.RoleRepository;
-import ru.kata.spring.boot_security.demo.rep.UserRepository;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 
 @Controller
 public class UsersController {
     private final UserServiceImpl userService;
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
-
     @Autowired
-    public UsersController(UserServiceImpl userService, UserRepository userRepository, RoleRepository roleRepository) {
+    public UsersController(UserServiceImpl userService) {
         this.userService = userService;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
     }
 
 
@@ -61,21 +49,21 @@ public class UsersController {
 
     @PostMapping("admin/{id}/edit")
     public String editUser(User user, @PathVariable Long id, @RequestParam(value = "role") String[] roles) {
-        user.setRoles(getRoles(roles));
+        user.setRoles(userService.getRoles(roles));
         userService.addUser(user);
         return "redirect:/admin/";
     }
 
-    @GetMapping("admin/add")
+
+        @GetMapping("admin/add")
     public String userFormPage (Model model) {
         model.addAttribute("user", new User());
-        //model.addAttribute("role", new ArrayList<Role>());
         return "add";
     }
 
     @PostMapping("admin/add")
     public String addUser (@ModelAttribute("user") User user, @RequestParam(value = "role") String[] roles) {
-        user.setRoles(getRoles(roles));
+        user.setRoles(userService.getRoles(roles));
         userService.addUser(user);
         return "redirect:/admin/";
     }
@@ -86,12 +74,6 @@ public class UsersController {
         return "redirect:/admin/";
     }
 
-    public Set<Role> getRoles(String[] roles) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String role : roles) {
-            roleSet.add(roleRepository.findByName(role));
-        }
-        return roleSet;
-    }
+
 
 }

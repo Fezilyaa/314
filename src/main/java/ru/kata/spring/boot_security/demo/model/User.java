@@ -6,7 +6,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.*;
@@ -20,7 +19,7 @@ public class User implements UserDetails {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //@Column(name = "username")
+    @Column(name = "username")
     private String username;
     @Column(name = "USER_AGE")
     private int userAge;
@@ -90,10 +89,10 @@ public class User implements UserDetails {
         return password;
     }
 
-//    public void setUserPassword(String password) {
-//        this.password = password;
-//
-//    }
+    public void setUserPassword(String password) {
+        this.password = password;
+
+    }
 
     @Override
     public String getUsername() {

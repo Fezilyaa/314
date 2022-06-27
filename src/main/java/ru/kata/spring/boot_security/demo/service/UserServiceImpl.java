@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,39 +10,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.rep.RoleRepository;
 import ru.kata.spring.boot_security.demo.rep.UserRepository;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements  UserDetailsService {
+public class UserServiceImpl implements  UserService, UserDetailsService {
 
     private UserRepository repo;
+    private RoleRepository roleRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository repo) {
         this.repo = repo;
     }
 
-
-    public User addUser(User user) {
-        return repo.save(user);
+    @Override
+    public void addUser(User user) {
+         repo.save(user);
     }
-
-
-
+    @Override
     public User getUserById(Long id) {
-        Optional<User> user = repo.findById(id);
-        return user.get();
+        return repo.findById(id).get();
     }
-
+    @Override
     public List<User> listOfUsers() {
         return repo.findAll();
     }
-
+    @Override
     public void deleteUser(Long id) {
         repo.deleteById(id);
     }
@@ -53,12 +49,8 @@ public class UserServiceImpl implements  UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = repo.findByUsername(username);
-        UserDetails newUser = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 getAuthorities(user.getRoles()));
-        //return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-        //        getAuthorities(user.getRoles()));
-        return newUser;
-
     }
 
     private static Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
@@ -68,5 +60,13 @@ public class UserServiceImpl implements  UserDetailsService {
 
     public User findByUsername(String username) {
         return repo.findByUsername(username);
+    }
+
+    public Set<Role> getRoles(String[] roles) {
+        Set<Role> roleSet = new HashSet<>();
+        for (String role : roles) {
+            roleSet.add(roleRepository.findByName(role));
+        }
+        return roleSet;
     }
 }
