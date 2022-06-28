@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
+import java.util.Set;
 
 
 @Controller
@@ -37,35 +38,25 @@ public class UsersController {
     @GetMapping("admin")
     public String listUsers(Model model) {
         model.addAttribute("users", userService.listOfUsers());
+        model.addAttribute("roles", userService.listRoles());
+
         return "users";
     }
 
-    @GetMapping("admin/{id}/edit")
-    public String editForm(@PathVariable("id") Long id, Model model) {
-        User user = userService.getUserById(id);
-        model.addAttribute("user", user);
-        return "edit";
-    }
 
     @PostMapping("admin/{id}/edit")
-    public String editUser(User user, @PathVariable Long id, @RequestParam(value = "role") String[] roles) {
-        user.setRoles(userService.getRoles(roles));
+    public String editUser(User user, @PathVariable("id") Long id,  Model model) {
+        User user1 = userService.getUserById(id);
+        model.addAttribute("user", user1);
         userService.addUser(user);
-        return "redirect:/admin/";
-    }
-
-
-        @GetMapping("admin/add")
-    public String userFormPage (Model model) {
-        model.addAttribute("user", new User());
-        return "add";
+        return "redirect:/admin";
     }
 
     @PostMapping("admin/add")
-    public String addUser (@ModelAttribute("user") User user, @RequestParam(value = "role") String[] roles) {
-        user.setRoles(userService.getRoles(roles));
+    public String addUser (Model model, User user) {
+        model.addAttribute("user", new User());
         userService.addUser(user);
-        return "redirect:/admin/";
+        return "redirect:/admin";
     }
 
     @GetMapping("admin/{id}/delete")
@@ -73,7 +64,5 @@ public class UsersController {
         userService.deleteUser(id);
         return "redirect:/admin/";
     }
-
-
 
 }

@@ -1,34 +1,95 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
-    <title>User Page</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>User panel</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
-<br>
-<table border="1">
-    <tr>
-        <th th:width="50">UserId</th>
-        <th th:width="100">Name</th>
-        <th th:width="100">Age</th>
-        <th th:width="50">Job</th>
-        <th th:width="100">Password</th>
-        <th th:width="100">Role</th>
-    </tr>
+<nav class="navbar navbar-expand-xl navbar-dark text-white bg-dark">
 
-    <tr>
-        <td th:utext="${user.id}">...</td>
-        <td th:utext="${user.username}">...</td>
-        <td th:utext="${user.userAge}">...</td>
-        <td th:utext="${user.userJob}">...</td>
-        <td th:utext="${user.password}">...</td>
-        <td th:text="${#strings.setJoin(user.getAuthorities, ',')}">...</td>
-    </tr>
-</table>
-<br>
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse show" id="navbarDark">
+            <ul class="navbar-nav me-auto mb-2 mb-xl-0">
+                <span class="align-middle font-weight-bold mr-1" th:text="${user.username}"></span></b>
+                <span class="align-middle mr-1">with roles:</span>
+                <span class="align-middle" th:each="role:${user.roles}" th:text="${role.name}">
+                    </span>
+            </ul>
+        </div>
 
-<form th:action="@{/logout}">
-    <input type="submit" value="LOGOUT"/>
-</form>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-dark text-secondary">Logout</button>
+        </form>
+
+    </div>
+</nav>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="p-0 col-2">
+            <div class="nav flex-column nav-pills pt-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" href="/user"
+                   role="tab"
+                   aria-controls="v-pills-profile" aria-selected="true">User</a>
+            </div>
+        </div>
+
+        <div class="col-10 px-0">
+            <div class="container-fluid">
+                <h1>USER PAGE</h1>
+                <div class="tab-content">
+                    <div class="tab-pane fade show active">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4>About user</h4>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>NAME</th>
+                                        <th>AGE</th>
+                                        <th>JOB</th>
+                                        <th>PASSWORD</th>
+                                        <th>ROLES</th>
+                                    </tr>
+                                    <td th:text="${user.id}"></td>
+                                    <td th:text="${user.username}"></td>
+                                    <td th:text="${user.userAge}"></td>
+                                    <td th:text="${user.userJob}"></td>
+                                    <td th:text="${user.password}"></td>
+                                    <td>
+                                        <li th:each="role: ${user.roles}" th:text="${role.name}"></li>
+                                    </td>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

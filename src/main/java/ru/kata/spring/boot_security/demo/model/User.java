@@ -6,6 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.persistence.*;
@@ -29,19 +30,32 @@ public class User implements UserDetails {
     private String password;
 
 
-    @ManyToMany(cascade=CascadeType.MERGE)
-    @JoinTable(
-            name="user_role",
-            joinColumns=@JoinColumn(name="user_id"),
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name="user_role", joinColumns=@JoinColumn(name="user_id"),
             inverseJoinColumns=@JoinColumn(name="role_id"))
     private Set<Role> roles;
 
-    public Collection<Role> getRoles() {
+    public User() {
+    }
+
+    public User(Long id, String username, int userAge, String userJob, String password, Set<Role> roles) {
+        this.username = username;
+        this.userAge = userAge;
+        this.userJob = userJob;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public Set<Role> getRoles() {
         return roles;
     }
     public void setRoles(Set<Role> roles)
     {
         this.roles = roles;
+    }
+
+    public void addRole(Role role) {
+        this.roles.add(role);
     }
 
     public Long getId() {
@@ -89,7 +103,7 @@ public class User implements UserDetails {
         return password;
     }
 
-    public void setUserPassword(String password) {
+    public void setPassword(String password) {
         this.password = password;
 
     }

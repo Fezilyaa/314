@@ -23,8 +23,9 @@ public class UserServiceImpl implements  UserService, UserDetailsService {
     private RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository repo) {
+    public UserServiceImpl(UserRepository repo, RoleRepository roleRepository) {
         this.repo = repo;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -62,11 +63,8 @@ public class UserServiceImpl implements  UserService, UserDetailsService {
         return repo.findByUsername(username);
     }
 
-    public Set<Role> getRoles(String[] roles) {
-        Set<Role> roleSet = new HashSet<>();
-        for (String role : roles) {
-            roleSet.add(roleRepository.findByName(role));
-        }
-        return roleSet;
+    public List<Role> listRoles() {
+        return roleRepository.findAll();
     }
+
 }
