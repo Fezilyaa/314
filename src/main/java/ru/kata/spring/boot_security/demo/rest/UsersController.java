@@ -15,6 +15,7 @@ import java.util.Set;
 @Controller
 public class UsersController {
     private final UserServiceImpl userService;
+
     @Autowired
     public UsersController(UserServiceImpl userService) {
         this.userService = userService;
