@@ -21,7 +21,6 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-around">
         <div class="container-fluid">
-<!--            <h3 class="text-white" th:utext="${user.username} + ' has roles: ' + ${user.getRoles}"></h3>-->
             <a href="/logout" class="btn btn-info" role="button">Logout</a>
         </div>
     </nav>
@@ -29,23 +28,20 @@
 
 
 <!--Main container-->
-<div class="container-fluid justify-content-start bg-light">
+<div class="container-fluid">
 
         <!--Sidebar-->
 
-        <div class="row d-flex">
-            <div class="col-md-2 bg-white">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin">Admin</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/user">User</a>
-                        </li>
-                    </ul>
-                </div>
+    <div class="row">
+        <div class="p-0 col-2">
+            <div class="nav flex-column nav-pills pt-2" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <a class="nav-link active" href="/admin"
+                   aria-controls="v-pills-home" aria-selected="true">Admin</a>
+                <a class="nav-link" href="/user"
+                   role="tab"
+                   aria-controls="v-pills-profile" aria-selected="false">User</a>
             </div>
+        </div>
 
             <!--Upper menu-->
 
@@ -63,7 +59,6 @@
 
                 <hr>
                 <!--Main table-->
-
                 <div class="tab-content">
                     <div class="tab-pane fade show active" id="usersTable">
                         <div class="card">
@@ -141,7 +136,6 @@
                                                     <div class="form-group">
                                                         <label for="user.password" class="col-form-label"><b>Password:</b></label>
                                                         <input type="text" class="form-control" id="password_modal"
-                                                               th:value="${user.password}"
                                                                th:name="password">
                                                     </div>
                                                     <label for="user.roles"><b>Role</b></label>
@@ -210,7 +204,6 @@
                                                             <div class="form-group">
                                                                 <label for="user.password" class="col-form-label"><b>Password:</b></label>
                                                                 <input type="text" class="form-control" id="user.password"
-                                                                       th:value="${user.password}"
                                                                        th:name="password">
                                                             </div>
 
@@ -250,7 +243,7 @@
                             <input th:name="username" th:type="text" class="form-control" id="username1" required>
 
                             <label for="userAge"><b>Age</b></label>
-                            <input th:name="userAge" th:type="number" class="form-control" id="userAge1"/>
+                            <input th:name="userAge" min="0" th:type="number" class="form-control" id="userAge1"/>
 
                             <label for="userJob"><b>Job</b></label>
                             <input th:name="userJob" th:type="text" class="form-control" id="userJob1"/>
