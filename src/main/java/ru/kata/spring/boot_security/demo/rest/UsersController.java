@@ -23,7 +23,7 @@ public class UsersController {
         this.userService = userService;
     }
 
-    @GetMapping("/api")
+    @GetMapping("/")
     public String getPage(Model model) {
         model.addAttribute("roles", userService.listRoles());
         return "users";

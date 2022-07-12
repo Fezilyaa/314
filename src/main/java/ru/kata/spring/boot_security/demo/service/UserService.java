@@ -13,4 +13,7 @@ public interface UserService {
     public User getUserById(Long id);
 
     public List<User> listOfUsers();
+
+    void saveAndFlush(User user);
+
 }

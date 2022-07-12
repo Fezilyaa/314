@@ -1,63 +1,63 @@
 package ru.kata.spring.boot_security.demo.rest;
 
-
-import org.springframework.http.HttpStatus;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.rep.RoleRepository;
+import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import java.net.URI;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/api")
+@RequiredArgsConstructor
 public class UsersRestController {
+    private final RoleRepository roleRepository;
 
     private final UserServiceImpl userService;
 
-    public UsersRestController(UserServiceImpl userService) {
-        this.userService = userService;
-    }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> apiGetAllUsers() {
-        List<User> users = userService.listOfUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
-
-    @PutMapping("/edit")
-    public ResponseEntity<?> update(@RequestBody User user) {
-        userService.addUser(user);
-        return new ResponseEntity<>(HttpStatus.ACCEPTED);
-    }
-
-    @GetMapping("/principal")
+    @GetMapping("/api/principal")
     public User getPrincipalInfo(Principal principal) {
-        return userService.findByUsername(principal.getName());
+        return userService.findByUserName(principal.getName());
     }
 
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
+    @GetMapping("/api/{id}")
+    public User findOneUser(@PathVariable long id) {
         User user = userService.getUserById(id);
         return user;
     }
 
-    @PostMapping("/add")
-    public List<User> addUser(@RequestBody User user) {
+    @PostMapping("/api")
+    public ResponseEntity addNewUser(@RequestBody User user) {
+        user.setRoles(userService.getRoles(userService.rolesToId(user.getRoles())));
         userService.addUser(user);
-        return userService.listOfUsers();
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getId())
+                .toUri();
+        return ResponseEntity.created(location).body(user);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
-        userService.deleteUser(userService.getUserById(id).getId());
-        return new ResponseEntity<>(HttpStatus.OK);
+    @GetMapping("/api")
+    public ResponseEntity<List<User>> findAllUsers() {
+        return ResponseEntity.ok().body(userService.listOfUsers());
+    }
+    @PutMapping("/api/{id}")
+    public User updateUser(@RequestBody User user, @PathVariable("id") long id) {
+        user.setRoles(userService.getRoles(userService.rolesToId(user.getRoles())));
+        userService.addUser(user);
+        return user;
+    }
+    @DeleteMapping("/api/{id}")
+    public void deleteUser(@PathVariable long id) {
+        userService.deleteUser(id);
     }
 
 }

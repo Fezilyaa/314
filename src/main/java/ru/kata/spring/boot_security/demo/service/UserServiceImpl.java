@@ -73,4 +73,24 @@ public class UserServiceImpl implements  UserService, UserDetailsService {
         return roleRepository.findAll();
     }
 
+    public void saveAndFlush(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        repo.saveAndFlush(user);
+    }
+
+    public Set<Role> getRoles (ArrayList<Long> roles){
+        return roleRepository.findByIdIn(roles);
+    }
+
+    public ArrayList <Long> rolesToId (Set<Role> roles){
+        ArrayList<Long> rolesId = new ArrayList<>();
+        for (Role role:roles){
+            rolesId.add(Long.valueOf(role.getName()));
+        }
+        return rolesId;
+    }
+
+    public User findByUserName(String userName) {
+        return repo.findByUsername(userName);
+    }
 }
