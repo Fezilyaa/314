@@ -1,4 +1,4 @@
-$(async function () {
+$(async function() {
     await getTableWithUsers();
     getDefaultModal();
     getActiveUserInfo();
@@ -14,7 +14,11 @@ const userFetchService = {
         'Referer': null
     },
     findAllUsers: async () => await fetch('api'),
-    addNewUser: async (user) => await fetch('api', {method: 'POST', headers: userFetchService.head, body: JSON.stringify(user)}),
+    addNewUser: async (user) => await fetch('api', {
+        method: 'POST',
+        headers: userFetchService.head,
+        body: JSON.stringify(user)
+    }),
     findOneUser: async (id) => await fetch(`api/${id}`),
     getPrincipalInfo: async () => await fetch(`api/principal`),
     updateUser: async (user, id) => await fetch(`api/${id}`, {
@@ -240,7 +244,6 @@ async function getDefaultModal() {
             case 'delete':
                 deleteUser(thisModal, userid);
                 break;
-
         }
     }).on("hidden.bs.modal", (e) => {
         let thisModal = $(e.target);
@@ -270,11 +273,11 @@ async function getNewUserForm() {
 async function addNewUser() {
     $('#addNewUserButton').click(async () =>  {
         let addUserForm = $('#defaultSomeForm')
-        let username = addUserForm.find('#AddNewUsername').val().trim();
+        let username = addUserForm.find('#AddNewUserName').val().trim();
         let userAge = addUserForm.find('#AddNewUserAge').val().trim();
         let userJob = addUserForm.find('#AddNewUserJob').val().trim();
         let password = addUserForm.find('#AddNewUserPassword').val().trim();
-        let roles = addUserForm.find('#AddNewUserRoles').val().trim();
+        let roles = addUserForm.find('#AddNewUserRoles').val()
         let data = {
             username: username,
             userAge: userAge,
@@ -283,9 +286,6 @@ async function addNewUser() {
             roles: roles
         }
 
-        let rolesAndData = {
-            user,roles
-        }
         const response = await userFetchService.addNewUser(data);
         if (response.ok) {
             getTableWithUsers();
