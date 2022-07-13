@@ -38,7 +38,7 @@ async function getActiveUserInfo() {
     let user = principal.json();
     user.then(user => {
         let userInfoFilling = `
-       <h6> <b> ${user.username}</b> with roles: ${user.roles}</h6>
+       <h6> <b> ${user.username}</b> with 'roles': ${user.roles}</h6>
     `
         headInfo.append(userInfoFilling)
     })
@@ -122,7 +122,7 @@ async function editUser(modal, id) {
                         multiple name="roles"
                         id="roles" required>
                 <option value="1">ADMIN</option>
-                <option selected value="2">USER</option>
+                <option value="2">USER</option>
                 </select>
                 </div>
             </form>

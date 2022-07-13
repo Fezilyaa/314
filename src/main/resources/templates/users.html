@@ -42,7 +42,7 @@
                     <a class="nav-link active">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/info">User</a>
+                    <a class="nav-link" href="/user">User</a>
                 </li>
 
             </ul>
@@ -81,11 +81,12 @@
                                         <input class="form-control" id="AddNewUserAge" type="number" placeholder="age">
                                         <input class="form-control" id="AddNewUserJob" type="text" placeholder="job">
                                         <input class="form-control" id="AddNewUserPassword" type="password" placeholder="password">
-                                        <select multiple class="form-control form-control-sm" id="AddNewUserRoles" th:name="roles"
-                                                size="2" required>
-                                            <option th:each="role: ${roles}"
-                                                    th:name="role"
-                                                    th:text="${role.name}" th:value="${role.id}" class="m-2"/>
+                                        <select class="custom-select"
+                                                size="3"
+                                                multiple name="roles"
+                                                id="AddNewUserRoles" required>
+                                            <option value="1">ADMIN</option>
+                                            <option value="2">USER</option>
                                         </select>
                                         <br>
 
