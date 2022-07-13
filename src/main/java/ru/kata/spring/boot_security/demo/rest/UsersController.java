@@ -25,11 +25,8 @@ public class UsersController {
 
     @GetMapping("/")
     public String getPage(Principal principal, Model model) {
-        User user = userService.findByUserName(principal.getName());
-        model.addAttribute("activeUser", user);
         model.addAttribute("roles", userService.listRoles());
         return "users";
     }
-
 
 }

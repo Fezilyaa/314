@@ -24,6 +24,12 @@ public class UsersRestController {
     private final UserServiceImpl userService;
 
 
+    @GetMapping("/api/getroles")
+    private List<Role> allRoles() {
+        return userService.listRoles();
+    }
+
+
     @GetMapping("/api/principal")
     public User getPrincipalInfo(Principal principal) {
         return userService.findByUserName(principal.getName());
