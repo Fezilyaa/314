@@ -64,6 +64,15 @@ public class User implements UserDetails {
         this.roles.add(role);
     }
 
+    public String getRolesView() {
+        StringBuilder sb = new StringBuilder();
+        for (Role role : roles) {
+            sb.append(role.getName().substring(5));
+            sb.append(" ");
+        }
+        return sb.toString();
+    }
+
     public Long getId() {
         return id;
     }

@@ -22,7 +22,7 @@
                         <strong>
                             <th:block th:each="user:${activeUser}" th:text="${activeUser.getUsername()}"></th:block>
                         </strong>
-                        <th:block th:each="user:${activeUser}" th:text="'with roles: '+ ${activeUser.getRolesView}"></th:block>
+                        <th:block th:each="user:${activeUser}" th:text="'with roles: '+ ${activeUser.getRolesView()}"></th:block>
                     </a>
 
 

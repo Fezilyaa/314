@@ -42,24 +42,16 @@ public class UsersRestController {
     }
 
     @PostMapping("/api")
-    public ResponseEntity addNewUser(@RequestBody User user) {
-        user.setRoles(userService.getRoles(userService.rolesToId(user.getRoles())));
+    public void addNewUser(@RequestBody User user) {
         userService.addUser(user);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(user.getId())
-                .toUri();
-        return ResponseEntity.created(location).body(user);
     }
     @GetMapping("/api")
     public ResponseEntity<List<User>> findAllUsers() {
         return ResponseEntity.ok().body(userService.listOfUsers());
     }
     @PutMapping("/api/{id}")
-    public User updateUser(@RequestBody User user, @PathVariable("id") long id) {
-        user.setRoles(userService.getRoles(userService.rolesToId(user.getRoles())));
-        userService.addUser(user);
-        return user;
+    public void updateUser(@RequestBody User user) {
+        userService.saveAndFlush(user);
     }
     @DeleteMapping("/api/{id}")
     public void deleteUser(@PathVariable long id) {

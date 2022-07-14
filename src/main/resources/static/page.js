@@ -36,12 +36,8 @@ async function getActiveUserInfo() {
     let principal = await userFetchService.getPrincipalInfo();
     let user = principal.json();
     user.then(user => {
-        let roles = "";
-        user.roles.forEach((role) => {
-            roles = roles + role.name
-        })
         let userInfoFilling = `
-       <h6> <b> ${user.username}</b> with roles: ${'[' + roles + ']'} </h6>
+       <h6> <b> ${user.username}</b> with roles: ${user.rolesView} </h6>
     `
         headInfo.append(userInfoFilling)
     })
@@ -56,17 +52,13 @@ async function getTableWithUsers() {
         .then(res => res.json())
         .then(users => {
             users.forEach(user => {
-                let roles = "";
-                user.roles.forEach((role) => {
-                    roles = roles + role.name
-                })
                 let tableFilling = `$(
                        <tr>
                             <td style='text-align: center'>${user.id}</td>
                             <td style='text-align: center'>${user.username}</td>
                             <td style='text-align: center'>${user.userAge}</td>
                             <td style='text-align: center'>${user.userJob}</td>
-                            <td style='text-align: center'>${roles}</td>
+                            <td style='text-align: center'>${user.rolesView}</td>
                             <td style='text-align: center'>
                                 <button type="button" data-userid="${user.id}" data-action="edit" class="btn btn-info"
                                 data-toggle="modal" data-target="#someDefaultModal">Edit</button>
@@ -93,20 +85,6 @@ async function getTableWithUsers() {
     })
 }
 
-
-
-function getAllRoles() {
-    return fetch("/api/getroles")
-        .then((response) => {
-            let res = response.json();
-            return res;
-        })
-        .then((roles) => {
-            console.log('all roles:')
-            console.log(roles);
-            return roles;
-        })
-}
 
 async function editUser(modal, id) {
     let preuser = await userFetchService.findOneUser(id);
@@ -139,8 +117,8 @@ async function editUser(modal, id) {
                         size="3"
                         multiple name="roles"
                         id="roles" required>
-                <option value="1">ADMIN</option>
-                <option selected value="2">USER</option>
+                <option value="ROLE_ADMIN">ADMIN</option>
+                <option value="ROLE_USER">USER</option>
                 </select>
                 </div>
             </form>
@@ -163,7 +141,7 @@ async function editUser(modal, id) {
             } else {
                 idRoles = 2
             }
-            editRolesList[i] = {id: idRoles, role: $('#roles').val()[i]};
+            editRolesList[i] = {id: idRoles, name: $('#roles').val()[i]};
         }
 
         let data = {
@@ -282,6 +260,7 @@ async function getDefaultModal() {
     })
 }
 
+
 async function getNewUserForm() {
     let button = $(`#SliderNewUserForm`);
     let form = $(`#defaultSomeForm`)
@@ -309,7 +288,7 @@ async function addNewUser() {
         let id = 0
         let rolesList = [];
         for (let i = 0; i < $('#AddNewUserRoles').val().length; i++) {
-            if ($('#AddNewUserRoles').val()[i] === 'ROLE_ADMIN') {
+            if ($('#AddNewUserRoles').val()[i] === '1') {
                 id = 1
             } else {
                 id = 2

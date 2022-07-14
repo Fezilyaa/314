@@ -23,10 +23,17 @@ public class UsersController {
         this.userService = userService;
     }
 
+    @GetMapping("/user")
+    public String userPage(Principal principal, Model model){
+        User user = userService.findByUserName(principal.getName());
+        model.addAttribute("activeUser", user);
+        return "user";
+    }
+
     @GetMapping("/")
-    public String getPage(Principal principal, Model model) {
-        model.addAttribute("roles", userService.listRoles());
+    public String page(){
         return "users";
     }
+
 
 }
