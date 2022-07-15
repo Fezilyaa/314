@@ -107,7 +107,7 @@ async function editUser(modal, id) {
                 <strong><labelfor="username">Username</label></strong>
                 <input class="form-control" type="text" id="username" value="${user.username}"><br>
                 <strong><labelfor="userAge">Age</label></strong>
-                <input class="form-control" id="userAge" type="number" value="${user.userAge}"> <br>
+                <input class="form-control" id="userAge" min="1" onkeyup="if(value<0) value =0" type="number" value="${user.userAge}"> <br>
                 <strong><labelfor="userJob">Job</label></strong>
                 <input class="form-control" type="text" id="userJob" value="${user.userJob}" ><br>
                 <strong><labelfor="password">Password</label></strong>
@@ -118,7 +118,7 @@ async function editUser(modal, id) {
                         multiple name="roles"
                         id="roles" required>
                 <option value="ROLE_ADMIN">ADMIN</option>
-                <option value="ROLE_USER">USER</option>
+                <option selected value="ROLE_USER">USER</option>
                 </select>
                 </div>
             </form>
